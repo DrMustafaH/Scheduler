@@ -15,3 +15,23 @@ export function getAppointmentsForDay(state, day) {
   });
   return outputArr;
 }
+
+
+export function getInterview(state, interview) {
+  if (interview === null) {
+    return null
+  }
+  let outputObj = null;
+  const appointmentKeys = Object.keys(state.appointments)
+  for (const key of appointmentKeys) {
+    const interviewInfo = state.appointments[key].interview
+    if (interviewInfo !== null) {
+      outputObj = {}
+      outputObj.student = interviewInfo.student
+      const interviewersKey = interviewInfo.interviewer
+      const stringInterviewersKey = interviewersKey.toString()
+      outputObj.interviewer = state.interviewers[stringInterviewersKey]
+    }
+  }
+  return outputObj
+}
