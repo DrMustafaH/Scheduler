@@ -11,19 +11,19 @@ export default function Application() {
     day: "Monday",
     days: [],
     appointments: {},
-    interviwers: {}
+    // interviwers: {}
   });
 
   const setDay = day => setState({ ...state, day });
 
   const dailyAppointments = getAppointmentsForDay(state, state.day);
   const mapAppointments = dailyAppointments.map((appointment) => {
-    const interview = getInterview(state, appointment.interview);
+    // const interview = getInterview(state, appointment.interview);
     return (<Appointment
       key={appointment.id}
       id={appointment.id}
       time={appointment.time}
-      interview={interview}
+    // interview={interview}
     />
     )
   })
