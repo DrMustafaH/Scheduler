@@ -3,7 +3,7 @@ import axios from 'axios'
 import "components/Application.scss";
 import DayList from "./DayList";
 import Appointment from "components/Appointment"
-import { getAppointmentsForDay } from "../helpers/selectors"
+import { getAppointmentsForDay, getInterview, getInterviewersForDay } from "../helpers/selectors"
 
 
 export default function Application() {
@@ -11,19 +11,45 @@ export default function Application() {
     day: "Monday",
     days: [],
     appointments: {},
-    // interviwers: {}
+    interviewers: []
   });
 
   const setDay = day => setState({ ...state, day });
+  const setAppointments = appointments => setState({ ...state, appointments })
+
+  function bookInterview(id, interview) {
+    const appointment = {
+      ...state.appointments[id],
+      interview: { ...interview }
+    };
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    };
+
+    return axios.put(`/api/appointments/${appointment.id}`, {
+      id: appointment.id,
+      time: appointment.time,
+      interview: appointment.interview
+    })
+      .then((res) => {
+        if (res.status === 204) {
+          setAppointments(appointments);
+        }
+      })
+  }
 
   const dailyAppointments = getAppointmentsForDay(state, state.day);
+  const dailyInterviewers = getInterviewersForDay(state, state.day)
   const mapAppointments = dailyAppointments.map((appointment) => {
-    // const interview = getInterview(state, appointment.interview);
+    const interview = getInterview(state, appointment.interview);
     return (<Appointment
       key={appointment.id}
       id={appointment.id}
       time={appointment.time}
-    // interview={interview}
+      bookInterview={bookInterview}
+      interview={interview}
+      interviewers={dailyInterviewers}
     />
     )
   })
@@ -34,7 +60,7 @@ export default function Application() {
       axios.get('http://localhost:8001/api/appointments'),
       axios.get('http://localhost:8001/api/interviewers')
     ]).then((all) => {
-      setState(prev => ({ ...prev, days: all[0].data, appointments: all[1].data, interviwers: all[2].data }));
+      setState(prev => ({ ...prev, days: all[0].data, appointments: all[1].data, interviewers: all[2].data }));
     })
   }, [])
 
