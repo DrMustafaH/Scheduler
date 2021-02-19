@@ -34,9 +34,13 @@ export default function Application() {
     })
       .then((res) => {
         if (res.status === 204) {
+          console.log("hello");
           setAppointments(appointments);
         }
       })
+    // .catch((err) => {
+    //   return err;
+    // })
   }
 
   function cancelInterview(id, interview) {
@@ -58,6 +62,9 @@ export default function Application() {
           setAppointments(appointments);
         }
       })
+    // .catch((err) => {
+    //   console.log(err);
+    // })
   }
 
   const dailyAppointments = getAppointmentsForDay(state, state.day);
