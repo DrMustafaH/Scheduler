@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from 'axios'
+// import { getAppointmentsForDay } from "../helpers/selectors"
 
 export function useApplicationData() {
   const [state, setState] = useState({
@@ -11,6 +12,8 @@ export function useApplicationData() {
 
   const setDay = day => setState({ ...state, day });
   const setAppointments = appointments => setState({ ...state, appointments })
+
+
 
   function bookInterview(id, interview) {
     const appointment = {
@@ -29,7 +32,8 @@ export function useApplicationData() {
     })
       .then((res) => {
         if (res.status === 204) {
-          setAppointments(appointments);
+          const updatedDays = spotsUpdater('decrease', state)
+          setState({ ...state, appointments, days: updatedDays })
         }
       })
   }
@@ -50,12 +54,45 @@ export function useApplicationData() {
     })
       .then((res) => {
         if (res.status === 204) {
-          setAppointments(appointments);
+          // setAppointments(appointments);
+          const updatedDays = spotsUpdater('increase', state)
+          setState({ ...state, appointments, days: updatedDays })
         }
       })
   }
 
 
+
+  function spotsUpdater(type, currentState) {
+    const days = [...currentState.days]
+    days.forEach((singleDay, i) => {
+      if (singleDay.name === currentState.day) {
+        const day = { ...singleDay }
+        if (type === 'increase') {
+          day.spots++
+        } else if (type === 'decrease') {
+          day.spots--
+        }
+        days[i] = day;
+      }
+    });
+    return days
+  }
+  // function updateSpotsRemaining(type, state) {
+  //   const days = [...state.days];
+  //   days.forEach((dayObj, i) => {
+  //     if (dayObj.name === state.day) {
+  //       const day = { ...dayObj };
+  //       if (type === "increment") {
+  //         day.spots++;
+  //       } else if (type === "decrement") {
+  //         day.spots--;
+  //       }
+  //       days[i] = day;
+  //     }
+  //   });
+  //   return days;
+  // }
   useEffect(() => {
     Promise.all([
       axios.get('http://localhost:8001/api/days'),

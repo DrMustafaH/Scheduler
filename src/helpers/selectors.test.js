@@ -3,17 +3,19 @@ import { getAppointmentsForDay, getInterviewersForDay, getInterview } from "help
 const state = {
   days: [
     {
-      id: 1,
-      name: "Monday",
-      appointments: [1, 2, 3, 4, 5],
-      interviewers: [1, 5, 6, 8, 10]
+      "id": 1,
+      "name": "Monday",
+      "appointments": [1, 2, 3, 4, 5],
+      "interviewers": [1, 5, 6, 8, 10],
+      "spots": 3
     },
     {
-      id: 2,
-      name: "Tuesday",
-      appointments: [6, 7, 8, 9, 10],
-      interviewers: [2, 3, 5, 8, 10]
-    }
+      "id": 2,
+      "name": "Tuesday",
+      "appointments": [6, 7, 8, 9, 10],
+      "interviewers": [2, 3, 5, 8, 10],
+      "spots": 2
+    },
   ],
   appointments: {
     "1": {

@@ -4,13 +4,7 @@ export function getAppointmentsForDay(state, day) {
   state.days.forEach(singleday => {
     if (day === singleday.name) {
       singleday.appointments.forEach(e => {
-        const appointementKeys = Object.keys(state.appointments)
-        const filteredArr = appointementKeys.filter(appointmentKey => Number(appointmentKey) === e)
-        filteredArr.forEach(key => {
-          const stringKey = key.toString()
-          const appointmentObj = state.appointments[stringKey]
-          outputArr.push(appointmentObj)
-        });
+        outputArr.push(state.appointments[e])
       })
     }
   });
@@ -38,38 +32,7 @@ export function getInterview(state, interview) {
     return null
   }
   let outputObj = {};
-  // const appointmentKeys = Object.keys(state.appointments)
-  // for (const key of appointmentKeys) {
-  //   const interviewInfo = state.appointments[key].interview
-  //   if (interviewInfo !== null) {
-  //     outputObj = {}
   outputObj.student = interview.student
-  // const interviewersKey = interviewInfo.interviewer
   outputObj.interviewer = state.interviewers[interview.interviewer];
-  // }
-  // }
   return outputObj
 }
-
-// const outputArr = [];
-// let newfilteredArr = "";
-// state.days.forEach(singleday => {
-//   if (day === singleday.name) {
-//     singleday.appointments.forEach(e => {
-//       const appointmentKeys = Object.keys(state.appointments)
-//       const toNumbers = arr => arr.map(Number);
-//       const appointmentKeysNumber = toNumbers(appointmentKeys)
-//       const filteredArr = appointmentKeysNumber.filter(appointmentKey => singleday.appointments.includes(appointmentKey))
-//       newfilteredArr = filteredArr;
-//     })
-//   }
-// });
-// if (newfilteredArr.length > 0) {
-//   newfilteredArr.forEach(key => {
-//     const stringAppointmentKey = key.toString()
-//     if (state.appointments[stringAppointmentKey].interview !== null) {
-//       const interviewerID = state.appointments[stringAppointmentKey].interview.interviewer
-//       outputArr.push(state.interviewers[interviewerID])
-//     }
-//   });
-// }
