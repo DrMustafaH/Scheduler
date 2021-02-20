@@ -12,13 +12,11 @@ export default function Application() {
     setDay,
     bookInterview,
     cancelInterview
-    // checkSpotsNumber
   } = useApplicationData();
 
-  // const availableSpots = checkSpotsNumber(state, state.day)
   const dailyAppointments = getAppointmentsForDay(state, state.day);
   const dailyInterviewers = getInterviewersForDay(state, state.day)
-  const mapAppointments = dailyAppointments.map((appointment) => {
+  const mapAppointments = dailyAppointments.map((appointment, i) => {
     const interview = getInterview(state, appointment.interview);
     return (<Appointment
       key={appointment.id}
@@ -46,7 +44,6 @@ export default function Application() {
             days={state.days}
             day={state.day}
             setDay={setDay}
-          // spots={availableSpots}
           />
         </nav>
         <img
@@ -57,6 +54,7 @@ export default function Application() {
       </section>
       <section className="schedule">
         {mapAppointments}
+        <Appointment id="last" time="5pm" />
       </section>
     </main>
   );
