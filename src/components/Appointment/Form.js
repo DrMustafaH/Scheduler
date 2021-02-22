@@ -17,13 +17,14 @@ export default function Form(props) {
       setError("Student name cannot be blank");
       return;
     }
-    // setName(name)
+    setError("");
     props.onSave(name, interviewer);
   }
   
 
   // function to reset student input area and interviewr
   function reset() {
+    setError('')
     setName("");
     setInterviewer(null);
   }
@@ -36,18 +37,11 @@ export default function Form(props) {
   }
 
 
-  // when save button is clicked onSave function is fired
-  // function handleSave() {
-  //   props.onSave(name, interviewer);
-  //   setName(name);
-  // }
-
-
 // return of the form component
   return (
     <main className="appointment__card appointment__card--create">
       <section className="appointment__card-left">
-        <form autoComplete="off">
+        <form autoComplete="off" onSubmit={event=>event.preventDefault()}>
           <input
             className="appointment__create-input text--semi-bold"
             name="name"
@@ -62,9 +56,7 @@ export default function Form(props) {
         <InterviewerList
           interviewers={props.interviewers}
           value={interviewer}
-          onChange={(id) => {
-            setInterviewer(id)
-          }}
+          onChange={setInterviewer}
         />
       </section>
       <section className="appointment__card-right">
