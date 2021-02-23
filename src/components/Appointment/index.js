@@ -54,6 +54,7 @@ export default function Appointment(props) {
         transition(ERROR_DELETE, true);
       });
   }
+  console.log("PROPS.INTERVIEW", props.interview);
   return (
     <article className="appointment" data-testid="appointment">
       <Header time={props.time} />

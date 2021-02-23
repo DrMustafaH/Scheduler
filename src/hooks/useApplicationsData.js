@@ -39,10 +39,10 @@ export function useApplicationData() {
   }
 
   // function to cancel interview and remove it from API
-  function cancelInterview(id, interview) {
+  function cancelInterview(id) {
     const appointment = {
       ...state.appointments[id],
-      interview: { ...interview },
+      interview: null,
     };
     const appointments = {
       ...state.appointments,
