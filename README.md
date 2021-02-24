@@ -44,6 +44,24 @@ npm run storybook
 
 ## ScreenShots
 
+!['day-selection'](https://github.com/DrMustafaH/Scheduler/blob/master/docs/day-selection.gif?raw=true)
+_By selecting a weekday on the left panel, a user can see booked appointments and available slots for each day, and selected day background in changed on selection._
+
+!['book-appointment'](https://github.com/DrMustafaH/Scheduler/blob/master/docs/book-appointment.gif?raw=true)
+_A walkthrough of how a user can book an appointment and how the spots is decreased when appointment is booked._
+
+!['cancel-appointment'](https://github.com/DrMustafaH/Scheduler/blob/master/docs/cancel-appointment.gif?raw=true)
+_Cancel appointment walkthrough where user hover on appointment, trash icon appear and a confirm message appear on click then appointment cancelled and spots number is increased._
+
+!['edit-appointment'](https://github.com/DrMustafaH/Scheduler/blob/master/docs/edit-appointment.gif?raw=true)
+_Edit appointment walkthrough where user hover on appointment, edit icon appear when clicked form shows with current information to be edited._
+
+!['error-message-save'](https://github.com/DrMustafaH/Scheduler/blob/master/docs/error-message-save.jpg?raw=true)
+_Error message if save cannot be performed._
+
+!['blank-error'](https://github.com/DrMustafaH/Scheduler/blob/master/docs/blank-error.jpg?raw=true)
+_Error message if student name is not entered._
+
 ## API server/\*Database Setup
 
 For full functionality both must run concurrently: the client and the API server applications.
