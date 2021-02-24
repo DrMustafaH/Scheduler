@@ -1,24 +1,25 @@
-import { useState, useEffect } from "react";
+import { useEffect, useReducer } from "react";
 import axios from "axios";
+import {
+  updateAppointment,
+  updateDay,
+  updateInitialData,
+  updateSpot,
+} from "./actions";
+import { appReducer, initialState } from "./appReducer";
 
 export function useApplicationData() {
-  const [state, setState] = useState({
-    day: "Monday",
-    days: [],
-    appointments: {},
-    interviewers: [],
-  });
-  const setDay = (day) => setState({ ...state, day });
+  let [state, dispatch] = useReducer(appReducer, initialState);
+
+  const setDay = (day) => {
+    dispatch(updateDay(day));
+  };
 
   // function to book interview and add it to API
   function bookInterview(id, interview, type) {
     const appointment = {
       ...state.appointments[id],
       interview: { ...interview },
-    };
-    const appointments = {
-      ...state.appointments,
-      [id]: appointment,
     };
     return axios
       .put(`/api/appointments/${appointment.id}`, {
@@ -28,12 +29,10 @@ export function useApplicationData() {
       })
       .then((res) => {
         if (res.status === 204) {
-          let updatedState = { ...state, appointments };
           if (type !== "edit") {
-            const updatedDays = spotsUpdater("decrease", state);
-            updatedState = { ...updatedState, days: updatedDays };
+            dispatch(updateSpot("decrease"));
           }
-          setState(updatedState);
+          dispatch(updateAppointment(appointment));
         }
       });
   }
@@ -44,10 +43,6 @@ export function useApplicationData() {
       ...state.appointments[id],
       interview: null,
     };
-    const appointments = {
-      ...state.appointments,
-      [id]: appointment,
-    };
     return axios
       .delete(`/api/appointments/${appointment.id}`, {
         id: appointment.id,
@@ -56,27 +51,10 @@ export function useApplicationData() {
       })
       .then((res) => {
         if (res.status === 204) {
-          const updatedDays = spotsUpdater("increase", state);
-          setState({ ...state, appointments, days: updatedDays });
+          dispatch(updateAppointment(appointment));
+          dispatch(updateSpot("increase"));
         }
       });
-  }
-
-  // function to update remaining spot counter
-  function spotsUpdater(type, currentState) {
-    const days = [...currentState.days];
-    days.forEach((singleDay, i) => {
-      if (singleDay.name === currentState.day) {
-        const day = { ...singleDay };
-        if (type === "increase") {
-          day.spots++;
-        } else if (type === "decrease") {
-          day.spots--;
-        }
-        days[i] = day;
-      }
-    });
-    return days;
   }
 
   // logic to retrieve data from API
@@ -86,12 +64,12 @@ export function useApplicationData() {
       axios.get("/api/appointments"),
       axios.get("/api/interviewers"),
     ]).then((all) => {
-      setState((prev) => ({
-        ...prev,
+      let res = {
         days: all[0].data,
         appointments: all[1].data,
         interviewers: all[2].data,
-      }));
+      };
+      dispatch(updateInitialData(res));
     });
   }, []);
 
