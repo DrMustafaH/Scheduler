@@ -26,12 +26,12 @@ export default function Appointment(props) {
     props.interview ? SHOW : EMPTY
   );
 
+  // save function to book an interview
   function save(name, interviewer, type) {
     const interview = {
       student: name,
       interviewer,
     };
-
     transition(SAVING);
     props
       .bookInterview(props.id, interview, type)
@@ -43,6 +43,7 @@ export default function Appointment(props) {
       });
   }
 
+  // delete appointment function
   function deleteAppointment(id, interview) {
     transition(DELETING, true);
     props
@@ -54,7 +55,7 @@ export default function Appointment(props) {
         transition(ERROR_DELETE, true);
       });
   }
-  console.log("PROPS.INTERVIEW", props.interview);
+
   return (
     <article className="appointment" data-testid="appointment">
       <Header time={props.time} />
@@ -78,13 +79,7 @@ export default function Appointment(props) {
         />
       )}
       {mode === CREATE && (
-        <Form
-          interviewers={props.interviewers}
-          onCancel={() => {
-            back();
-          }}
-          onSave={save}
-        />
+        <Form interviewers={props.interviewers} onCancel={back} onSave={save} />
       )}
       {mode === SAVING && <Status message="Saving" />}
       {mode === DELETING && <Status message="Deleting" />}
@@ -112,7 +107,7 @@ export default function Appointment(props) {
         <Error
           message="Could not delete appointment."
           onClose={() => {
-            transition(CONFIRM);
+            transition(CREATE);
           }}
         />
       )}
@@ -120,7 +115,7 @@ export default function Appointment(props) {
         <Error
           message="Could not save appointment."
           onClose={() => {
-            transition(EDIT);
+            transition(CREATE);
           }}
         />
       )}
